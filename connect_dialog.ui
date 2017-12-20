@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>connect</class>
+ <widget class="QDialog" name="connect">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>343</width>
+    <height>232</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Connect to server</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="1" column="1">
+    <spacer name="horizontalSpacer">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>40</width>
+       <height>20</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+   <item row="1" column="3">
+    <widget class="QPushButton" name="connectbtn">
+     <property name="text">
+      <string>Connect</string>
+     </property>
+     <property name="default">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QPushButton" name="quitbtn">
+     <property name="text">
+      <string>Quit</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="0" colspan="4">
+    <widget class="QWidget" name="widget" native="true">
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="2" column="0">
+       <widget class="QLabel" name="passwordlbl">
+        <property name="text">
+         <string>Password:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QLineEdit" name="usernamele"/>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="usernamelbl">
+        <property name="text">
+         <string>Username:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="1">
+       <widget class="QLineEdit" name="addressle"/>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="addresslbl">
+        <property name="text">
+         <string>Server address:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="1">
+       <widget class="QLineEdit" name="passwordle">
+        <property name="echoMode">
+         <enum>QLineEdit::Password</enum>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="2">
+       <spacer name="verticalSpacer">
+        <property name="orientation">
+         <enum>Qt::Vertical</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>20</width>
+          <height>40</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+      <item row="3" column="0">
+       <widget class="QLabel" name="statuslbl">
+        <property name="text">
+         <string>Status:</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="QLabel" name="statusoutputlbl">
+        <property name="text">
+         <string>Waiting for input.</string>
+        </property>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <tabstops>
+  <tabstop>addressle</tabstop>
+  <tabstop>usernamele</tabstop>
+  <tabstop>passwordle</tabstop>
+  <tabstop>connectbtn</tabstop>
+  <tabstop>quitbtn</tabstop>
+ </tabstops>
+ <resources/>
+ <connections/>
+</ui>
