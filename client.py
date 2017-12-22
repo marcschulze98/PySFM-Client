@@ -58,14 +58,55 @@ def get_members():
 	connection.send(cmd)
 
 
-def delete_group():
-	name = groupsui.grouplist.currentItem().text()
-	cmd = "deletegroup " + name
+def get_users():
+	cmd = "users"
 	cmd = bytearray("/" + cmd, "UTF8")
 	cmd = (len(cmd) + 1).to_bytes(2, 'big') + cmd + int(0).to_bytes(1, 'big')
 	connection.send(cmd)
-	get_groups()
-	groupsui.memberlist.clear()
+
+
+def get_onlineusers():
+	cmd = "onlineusers"
+	cmd = bytearray("/" + cmd, "UTF8")
+	cmd = (len(cmd) + 1).to_bytes(2, 'big') + cmd + int(0).to_bytes(1, 'big')
+	connection.send(cmd)
+
+
+def delete_group():
+	name = groupsui.grouplist.currentItem()
+	if name is not None:
+		name = name.text()
+		cmd = "deletegroup " + name
+		cmd = bytearray("/" + cmd, "UTF8")
+		cmd = (len(cmd) + 1).to_bytes(2, 'big') + cmd + int(0).to_bytes(1, 'big')
+		connection.send(cmd)
+		groupsui.memberlist.clear()
+		get_groups()
+
+
+def create_group():
+	name = groupsui.creategrouple.text()
+	if name != "":
+		cmd = "creategroup " + name
+		cmd = bytearray("/" + cmd, "UTF8")
+		cmd = (len(cmd) + 1).to_bytes(2, 'big') + cmd + int(0).to_bytes(1, 'big')
+		connection.send(cmd)
+		get_groups()
+		groupsui.memberlist.clear()
+
+
+def add_user():
+	name = groupsui.adduserle.text()
+	group = groupsui.grouplist.currentItem()
+	print(str(name) + " " + str(group))
+	if name != "" and group is not None:
+		group = group.text()
+		cmd = "addmember " + group + " " + name
+		cmd = bytearray("/" + cmd, "UTF8")
+		cmd = (len(cmd) + 1).to_bytes(2, 'big') + cmd + int(0).to_bytes(1, 'big')
+		connection.send(cmd)
+		get_groups()
+		groupsui.memberlist.clear()
 
 
 class Signals(QObject):
@@ -73,6 +114,8 @@ class Signals(QObject):
 	set_groups_signal = pyqtSignal(list)
 	set_members_signal = pyqtSignal(str, list)
 	open_groups_signal = pyqtSignal()
+	set_users_signal = pyqtSignal(list)
+	open_users_signal = pyqtSignal()
 
 	def __init__(self):
 		super().__init__()
@@ -80,6 +123,8 @@ class Signals(QObject):
 		self.set_groups_signal.connect(self.set_groups)
 		self.set_members_signal.connect(self.set_members)
 		self.open_groups_signal.connect(self.open_groups)
+		self.set_users_signal.connect(self.set_users)
+		self.open_users_signal.connect(self.open_users)
 
 	@staticmethod
 	def open_login():
@@ -91,12 +136,16 @@ class Signals(QObject):
 		groupsdialog.exec()
 
 	@staticmethod
+	def open_users():
+		get_onlineusers()
+		usersdialog.exec()
+
+	@staticmethod
 	def set_groups(groupargs):
 		grouplist.clear()
 		for group in groupargs:
 			grouplist.update({group: []})
 		groupsui.grouplist.clear()
-		print("done")
 		for group in grouplist:
 			groupsui.grouplist.addItem(group)
 
@@ -109,6 +158,12 @@ class Signals(QObject):
 			groupsui.memberlist.clear()
 			for member in memberlist:
 				groupsui.memberlist.addItem(member)
+
+	@staticmethod
+	def set_users(users):
+		usersui.userlist.clear()
+		for user in users:
+			usersui.userlist.addItem(user)
 
 
 signals_object = Signals()
@@ -138,7 +193,12 @@ def command_handler(message):
 		name = tmp[0]
 		items = tmp[1].split(",") if len(tmp) == 2 else []
 		signals_object.set_members_signal.emit(name, items)
-
+	elif message[:len("/status users")] == "/status users":
+		items = message[len("/status users "):].split(",")
+		signals_object.set_users_signal.emit(items)
+	elif message[:len("/status onlineusers")] == "/status onlineusers":
+		items = message[len("/status onlineusers "):].split(",")
+		signals_object.set_users_signal.emit(items)
 
 class message_logging(QObject):
 	incoming_message = pyqtSignal(str)
@@ -150,14 +210,14 @@ class message_logging(QObject):
 	def message_receiver(self):
 		while True:
 			message = get_sfm_message()
-			if message is False:
+			if message == False:
 				self.incoming_message.emit("Connection closed.\n")
 				connection.close()
 				signals_object.open_login_signal.emit()
 				return
 			elif message is not None:
 				if message[0] == 47:
-					print(message.decode("utf-8"))
+					print(message.decode("utf-8").rstrip("\0"))
 					command_handler(message.decode("utf-8").rstrip("\0"))
 				else:
 					output = "At: " + datetime.datetime.fromtimestamp(int.from_bytes(message[:8], byteorder='little')).strftime('%Y-%m-%d %H:%M:%S') + "\n"
@@ -263,10 +323,16 @@ mainui.contactbtn.clicked.connect(add_contact)
 mainui.cmdbtn.clicked.connect(send_command)
 mainui.serverinput.currentTextChanged.connect(user_contact)
 mainui.showgroupbtn.clicked.connect(signals_object.open_groups_signal)
+mainui.showusersbtn.clicked.connect(signals_object.open_users_signal)
 
 groupsui.refreshbtn.clicked.connect(get_groups)
 groupsui.grouplist.itemSelectionChanged.connect(get_members)
 groupsui.deletegroupbtn.clicked.connect(delete_group)
+groupsui.creategroupbtn.clicked.connect(create_group)
+groupsui.adduserbtn.clicked.connect(add_user)
+
+usersui.allusersbtn.clicked.connect(get_users)
+usersui.onlineusersbtn.clicked.connect(get_onlineusers)
 
 signals_object.open_login_signal.emit()
 sys.exit(app.exec_())

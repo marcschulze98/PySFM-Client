@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'pysfm.ui'
 #
-# Created by: PyQt5 UI code generator 5.9.2
+# Created by: PyQt5 UI code generator 5.7
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -97,15 +97,12 @@ class Ui_MainWindow(object):
         self.groupBox_3.setObjectName("groupBox_3")
         self.gridLayout_5 = QtWidgets.QGridLayout(self.groupBox_3)
         self.gridLayout_5.setObjectName("gridLayout_5")
-        self.showonlineusersbtn = QtWidgets.QPushButton(self.groupBox_3)
-        self.showonlineusersbtn.setObjectName("showonlineusersbtn")
-        self.gridLayout_5.addWidget(self.showonlineusersbtn, 0, 1, 1, 1)
         self.showgroupbtn = QtWidgets.QPushButton(self.groupBox_3)
         self.showgroupbtn.setObjectName("showgroupbtn")
         self.gridLayout_5.addWidget(self.showgroupbtn, 0, 0, 1, 1)
-        self.showallusersbtn = QtWidgets.QPushButton(self.groupBox_3)
-        self.showallusersbtn.setObjectName("showallusersbtn")
-        self.gridLayout_5.addWidget(self.showallusersbtn, 0, 2, 1, 1)
+        self.showusersbtn = QtWidgets.QPushButton(self.groupBox_3)
+        self.showusersbtn.setObjectName("showusersbtn")
+        self.gridLayout_5.addWidget(self.showusersbtn, 0, 1, 1, 1)
         self.gridLayout_2.addWidget(self.groupBox_3, 0, 0, 1, 1)
         self.scrollArea = QtWidgets.QScrollArea(self.splitter)
         self.scrollArea.setFrameShape(QtWidgets.QFrame.NoFrame)
@@ -150,8 +147,7 @@ class Ui_MainWindow(object):
         self.messagelbl.setText(_translate("MainWindow", "Message:"))
         self.sendbtn.setText(_translate("MainWindow", "Send"))
         self.groupBox_3.setTitle(_translate("MainWindow", "Groups and users"))
-        self.showonlineusersbtn.setText(_translate("MainWindow", "Show online users"))
         self.showgroupbtn.setText(_translate("MainWindow", "Show groups"))
-        self.showallusersbtn.setText(_translate("MainWindow", "Show all users"))
+        self.showusersbtn.setText(_translate("MainWindow", "Show users"))
         self.incmessagelbl.setText(_translate("MainWindow", "Incoming messsages:"))
 

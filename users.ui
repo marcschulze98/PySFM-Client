@@ -14,13 +14,27 @@
    <string>Users</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
-   <item row="1" column="0">
-    <widget class="QListWidget" name="userlist"/>
-   </item>
    <item row="0" column="0">
     <widget class="QLabel" name="label">
      <property name="text">
       <string>Users:</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QListWidget" name="userlist"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QPushButton" name="allusersbtn">
+     <property name="text">
+      <string>Show all users</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="0">
+    <widget class="QPushButton" name="onlineusersbtn">
+     <property name="text">
+      <string>Show online users</string>
      </property>
     </widget>
    </item>
