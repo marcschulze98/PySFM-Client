@@ -98,7 +98,6 @@ def create_group():
 def add_user():
 	name = groupsui.adduserle.text()
 	group = groupsui.grouplist.currentItem()
-	print(str(name) + " " + str(group))
 	if name != "" and group is not None:
 		group = group.text()
 		cmd = "addmember " + group + " " + name
@@ -106,6 +105,20 @@ def add_user():
 		cmd = (len(cmd) + 1).to_bytes(2, 'big') + cmd + int(0).to_bytes(1, 'big')
 		connection.send(cmd)
 		get_groups()
+		groupsui.memberlist.clear()
+
+
+def delete_user():
+	name = groupsui.memberlist.currentItem()
+	group = groupsui.grouplist.currentItem()
+	if name is not None and group is not None:
+		name = name.text()
+		group = group.text()
+		cmd = "deletemember " + group + " " + name
+		cmd = bytearray("/" + cmd, "UTF8")
+		cmd = (len(cmd) + 1).to_bytes(2, 'big') + cmd + int(0).to_bytes(1, 'big')
+		connection.send(cmd)
+		get_members()
 		groupsui.memberlist.clear()
 
 
@@ -330,6 +343,7 @@ groupsui.grouplist.itemSelectionChanged.connect(get_members)
 groupsui.deletegroupbtn.clicked.connect(delete_group)
 groupsui.creategroupbtn.clicked.connect(create_group)
 groupsui.adduserbtn.clicked.connect(add_user)
+groupsui.deleteuserbtn.clicked.connect(delete_user)
 
 usersui.allusersbtn.clicked.connect(get_users)
 usersui.onlineusersbtn.clicked.connect(get_onlineusers)
